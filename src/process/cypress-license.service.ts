@@ -16,7 +16,7 @@ const WORKING_DIRECTORY = 'work';
 export class CypressLicenseService {
 
     async licenseOfData(osmid: string, imageProperties: ImageProperties): Promise<License | LicenseError> {
-        this.deleteFilesOfDirectory(WORKING_DIRECTORY + '/');
+        this.ensureClearedDirectory(WORKING_DIRECTORY + '/');
 
         const result1 = this.writeToFile(WORKING_DIRECTORY + '/exchange-image-1-searchvalue.txt', imageProperties.entityid);
         const result2 = this.writeToFile(WORKING_DIRECTORY + '/exchange-image-2-data.json', JSON.stringify(imageProperties));
@@ -57,8 +57,12 @@ export class CypressLicenseService {
         return await new Promise(poll);
     }
 
-    private deleteFilesOfDirectory(directory: string) {
-        let files = fs.readdirSync(directory);
+    private ensureClearedDirectory(directory: string) {
+        if (!fs.existsSync(directory)){
+            fs.mkdirSync(directory);
+        }
+
+        const files = fs.readdirSync(directory);
         for (const file of files) {
             fs.unlink(path.join(directory, file), (err) => {
                 if (err) throw err;
