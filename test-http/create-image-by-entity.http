@@ -1,0 +1,11 @@
+POST http://localhost:3000/images
+Content-Type: application/json
+
+{
+  "type": "wikidata:entity",
+  "entityid": "Q1551353",
+  "titleid": null,
+  "filename": "Panorama Pestruper Gräberfeld.jpg",
+  "originurl": "https://commons.wikimedia.org/wiki/File:Panorama Pestruper Gräberfeld.jpg",
+  "resizeurl": "https://commons.wikimedia.org/wiki/Special:FilePath/Panorama Pestruper Gräberfeld.jpg?width=300"
+}

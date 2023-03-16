@@ -1,0 +1,11 @@
+POST http://localhost:3000/images
+Content-Type: application/json
+
+{
+  "type": "wikipedia:search",
+  "entityid": "Q42",
+  "titleid": "de:Douglas Adams",
+  "filename": "Douglas adams portrait cropped.jpg",
+  "originurl": "https://commons.wikimedia.org/wiki/File:Douglas adams portrait cropped.jpg",
+  "resizeurl": "https://commons.wikimedia.org/wiki/Special:FilePath/Douglas adams portrait cropped.jpg?width=300"
+}
