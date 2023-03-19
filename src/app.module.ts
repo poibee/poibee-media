@@ -9,9 +9,7 @@ import {CypressLicenseService} from "./process/cypress-license.service";
 
 @Module({
     imports: [
-        //MongooseModule.forRoot('mongodb://localhost:27017/poibee'),
-        //MongooseModule.forRoot('mongodb://poibee-mongo:27017/poibee'),
-        MongooseModule.forRoot('mongodb://192.168.178.21:27017/poibee'),
+        MongooseModule.forRoot('mongodb://poibee-mongo:27017/poibee'),
         ImagesModule,
         LicenseModule,
         WikiModule
