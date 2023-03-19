@@ -16,10 +16,11 @@ export class AppController {
     }
 
     // Image by given OSM id
-    // http://localhost:3000/image/node-1235?entityid=Q42
-    // http://localhost:3000/image/node-1235?titleid=de:Douglas Adams
+    // http://localhost:3000/image/node-1234?entityid=Q42
+    // http://localhost:3000/image/node-1235?entityid=Q42&timeout=120
+    // http://localhost:3000/image/node-1236?titleid=de:Douglas%20Adams&timeout=120
     @Get('image/:osmid')
-    async getImage(@Res() response: Response, @Param('osmid') osmid: string, @Query("entityid") entityid: string, @Query("titleid") titleid: string) {
+    async getImage(@Res() response: Response, @Param('osmid') osmid: string, @Query("entityid") entityid: string, @Query("titleid") titleid: string, @Query("timeout") timeout: number) {
         if (!this.processService.isProcessing()) {
 
             let license = null; // TODO = this.licenseCacheService.findLicense(osmid);
@@ -32,14 +33,14 @@ export class AppController {
                 error = await this.licenseMongoService.findError(osmid)
             }
 
-            console.log("getImage start: " + osmid + " => license=" + (license !== undefined) + ", error=" + (error !== undefined));
+            console.log("getImage start: " + osmid + " => license=" + this.exists(license) + ", error=" + this.exists(error));
 
             if (license == null && error == null) {
                 response.status(HttpStatus.NO_CONTENT).send("No content yet. Server processing has been triggered. Try again in some seconds.");
 
                 console.log("getImage process license: " + osmid);
                 const osmQueryData = new OsmQueryData(osmid, entityid, titleid);
-                this.processService.process(osmQueryData);
+                this.processService.process(osmQueryData, timeout);
             } else {
                 const content = license ? license : error;
                 // TODO: don't return the error
@@ -50,4 +51,8 @@ export class AppController {
         }
         console.log("getImage done: " + osmid);
     };
+
+    private exists(object :any): boolean {
+        return object !== undefined && object!== null;
+    }
 }

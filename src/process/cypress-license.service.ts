@@ -15,10 +15,11 @@ const WORKING_DIRECTORY = 'work';
 @Injectable()
 export class CypressLicenseService {
 
-    async licenseOfData(osmid: string, imageProperties: ImageProperties): Promise<License | LicenseError> {
+    async licenseOfData(osmid: string, imageProperties: ImageProperties, timeoutInSeconds: number): Promise<License | LicenseError> {
         this.ensureClearedDirectory(WORKING_DIRECTORY + '/');
 
-        const result1 = this.writeToFile(WORKING_DIRECTORY + '/exchange-image-1-searchvalue.txt', imageProperties.entityid);
+        const searchvalue = imageProperties.entityid ? imageProperties.entityid : imageProperties.titleid;
+        const result1 = this.writeToFile(WORKING_DIRECTORY + '/exchange-image-1-searchvalue.txt', searchvalue);
         const result2 = this.writeToFile(WORKING_DIRECTORY + '/exchange-image-2-data.json', JSON.stringify(imageProperties));
         const allResults: void | LicenseError = result1 ? result1 : result2;
         if (ImagePropertiesUtil.isErrorProperties(allResults)) {
@@ -27,7 +28,8 @@ export class CypressLicenseService {
 
         this.startCypressProcess();
 
-        const fileExists = await this.waitTillLicenseFileExists(WORKING_DIRECTORY + '/exchange-image-3-license.html', CYPRESS_TIMEOUT_IN_SECONDS);
+        const timeoutInSec = timeoutInSeconds ? timeoutInSeconds : CYPRESS_TIMEOUT_IN_SECONDS;
+        const fileExists = await this.waitTillLicenseFileExists(WORKING_DIRECTORY + '/exchange-image-3-license.html', timeoutInSec);
         if (!fileExists) {
             return new Promise(resolve => resolve(LicenseError.E9_CYPRESS_TIMEOUT_ERROR));
         }

@@ -27,7 +27,7 @@ export class ProcessService {
         return this.processing;
     }
 
-    async process(osmQueryData: OsmQueryData): Promise<void> {
+    async process(osmQueryData: OsmQueryData, cypressTimeoutInSeconds: number): Promise<void> {
         this.processing = true;
 
         console.log("process -> start: " + JSON.stringify(osmQueryData));
@@ -37,7 +37,7 @@ export class ProcessService {
         if (ImagePropertiesUtil.isImageProperties(imagePropertiesOrError)) {
             console.log("process -> imagePropertiesOrError: " + "Found !");
             const imageProps = imagePropertiesOrError as ImageProperties;
-            const license = await this.cypressService.licenseOfData(osmQueryData.osmid, imageProps)
+            const license = await this.cypressService.licenseOfData(osmQueryData.osmid, imageProps, cypressTimeoutInSeconds)
 
             if (ImagePropertiesUtil.isLicenseProperties(license)) {
                 console.log("process -> license: " + "Found !");
