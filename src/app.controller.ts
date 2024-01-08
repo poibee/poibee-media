@@ -15,6 +15,16 @@ export class AppController {
         ) {
     }
 
+    @Get('health')
+    async health(@Res() response: Response) {
+        response.status(HttpStatus.OK).send("Up");
+    };
+
+    @Get()
+    async root(@Res() response: Response) {
+        response.status(HttpStatus.OK).send("PoiBee-Media service");
+    };
+
     // Image by given OSM id
     // http://localhost:3000/image/node-1234?entityid=Q42
     // http://localhost:3000/image/node-1235?entityid=Q42&timeout=120
