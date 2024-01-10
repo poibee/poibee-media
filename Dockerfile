@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 # --- start production image
-FROM cypress/included:12.7.0 AS production
+FROM cypress/included:13.6.2 AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
